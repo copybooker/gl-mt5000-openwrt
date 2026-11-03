@@ -32,13 +32,9 @@ jobs:
         run: |
           sudo mkdir -p /mnt/openwrt
           sudo chown -R "$USER:$USER" /mnt/openwrt
-          git config --global --unset-all url.https://com.insteadof || true
-          git config --global --unset-all url.https://github.com || true
-          sudo git config --system --unset-all url.https://com.insteadof || true
-          sudo git config --system --unset-all url.https://github.com || true
-          git clone -c url."https://github.com/".insteadOf="" --depth 1 -b v25.12.0 https://github.com /mnt/openwrt
+          wget -qO- https://github.com | tar -xzF - --strip-components=1 -C /mnt/openwrt
           cd /mnt/openwrt
-          echo "HEAD: $(git rev-parse --short HEAD)"
+          ls -la
 
       - name: Cache downloads & ccache
         uses: actions/cache@v4
