@@ -35,9 +35,9 @@ jobs:
         run: |
           sudo mkdir -p "$OPENWRT_PATH"
           sudo chown "$USER:$USER" "$OPENWRT_PATH"
-          git clone --depth 1 -b "$REPO_BRANCH" "$REPO_URL" "$OPENWRT_PATH"
+          git clone --depth 1 -b v25.12.0 https://github.com "$OPENWRT_PATH"
           cd "$OPENWRT_PATH"
-          echo "HEAD: $(git rev-parse --short HEAD) on $REPO_BRANCH"
+          echo "HEAD: $(git rev-parse --short HEAD)"
 
       - name: Cache downloads & ccache
         uses: actions/cache@v4
