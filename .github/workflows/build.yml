@@ -4,9 +4,6 @@ on:
   workflow_dispatch:
 
 env:
-  REPO_URL: https://github.com
-  REPO_BRANCH: v25.12.0
-  GL_DEVICE_COMMIT: https://github.com
   OPENWRT_PATH: /mnt/openwrt
   TZ: Europe/Lisbon
 
@@ -34,7 +31,7 @@ jobs:
       - name: Clone OpenWrt (official, openwrt-25.12)
         run: |
           sudo mkdir -p /mnt/openwrt
-          sudo chown "$USER:$USER" /mnt/openwrt
+          sudo chown -R "$USER:$USER" /mnt/openwrt
           git clone --depth 1 -b v25.12.0 https://github.com /mnt/openwrt
           cd /mnt/openwrt
           echo "HEAD: $(git rev-parse --short HEAD)"
@@ -45,40 +42,40 @@ jobs:
           path: |
             /mnt/openwrt/dl
             /mnt/openwrt/.ccache
-          key: mt5000-${{ hashFiles('config/mt5000.config', 'scripts/diy.sh', 'files/dsa/rtl8366ub_dsa.c') }}
+          key: mt5000-v25.12.0
           restore-keys: mt5000-
 
       - name: Update & install feeds (official only)
         run: |
-          cd "$OPENWRT_PATH"
+          cd /mnt/openwrt
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
       - name: Configure
         run: |
-          cd "$OPENWRT_PATH"
+          cd /mnt/openwrt
           cp "$GITHUB_WORKSPACE/config/mt5000.config" .config
           make defconfig
 
       - name: Verify switch driver is selected
         run: |
-          cd "$OPENWRT_PATH"
+          cd /mnt/openwrt
           grep '^CONFIG_PACKAGE_kmod-rtl8366ub' .config || true
 
       - name: Download sources
         run: |
-          cd "$OPENWRT_PATH"
+          cd /mnt/openwrt
           make -j$(nproc) download || make -j1 download
 
       - name: Compile firmware
         run: |
-          cd "$OPENWRT_PATH"
+          cd /mnt/openwrt
           make -j$(nproc) || make -j$(nproc) || make -j1 V=s
 
       - name: Collect firmware
         if: always()
         run: |
-          cd "$OPENWRT_PATH"
+          cd /mnt/openwrt
           mkdir -p "$GITHUB_WORKSPACE/artifact"
           find bin/targets -type f \( -name '*sysupgrade.bin' -o -name '*initramfs*.bin' \
             -o -name '*.manifest' -o -name 'config.buildinfo' \) \
