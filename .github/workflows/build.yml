@@ -32,10 +32,9 @@ jobs:
         run: |
           sudo mkdir -p /mnt/openwrt
           sudo chown -R "$USER:$USER" /mnt/openwrt
-          curl -L -v -o /mnt/openwrt/openwrt.tar.gz https://gitlab.com
+          git clone --depth 1 -b openwrt-24.10 git://git.openwrt.org/openwrt/openwrt.git /mnt/openwrt
           cd /mnt/openwrt
-          tar -xzf openwrt.tar.gz --strip-components=1
-          ls -la
+          echo "HEAD: $(git rev-parse --short HEAD)"
 
       - name: Cache downloads & ccache
         uses: actions/cache@v4
