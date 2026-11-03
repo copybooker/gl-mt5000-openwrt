@@ -48,10 +48,6 @@ jobs:
           key: mt5000-${{ hashFiles('config/mt5000.config', 'scripts/diy.sh', 'files/dsa/rtl8366ub_dsa.c') }}
           restore-keys: mt5000-
 
-#      - name: Graft device support + convert switch to DSA
-#        run: |
-#          cd "$OPENWRT_PATH"
-#          bash "$GITHUB_WORKSPACE/scripts/diy.sh"
 
       - name: Update & install feeds (official only)
         run: |
