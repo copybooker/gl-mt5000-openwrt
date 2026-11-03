@@ -32,7 +32,7 @@ jobs:
         run: |
           sudo mkdir -p /mnt/openwrt
           sudo chown -R "$USER:$USER" /mnt/openwrt
-          git clone --depth 1 -b openwrt-24.10 git://git.openwrt.org/openwrt/openwrt.git /mnt/openwrt
+          git clone -c url."https://gitlab.com".insteadOf="https://github.com" --depth 1 -b openwrt-24.10 https://gitlab.comopenwrt/openwrt.git /mnt/openwrt
           cd /mnt/openwrt
           echo "HEAD: $(git rev-parse --short HEAD)"
 
