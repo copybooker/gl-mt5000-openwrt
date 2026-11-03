@@ -32,7 +32,7 @@ jobs:
         run: |
           sudo mkdir -p /mnt/openwrt
           sudo chown -R "$USER:$USER" /mnt/openwrt
-          wget -qO- https://github.com | tar -xzF - --strip-components=1 -C /mnt/openwrt
+          wget -qO- https://github.com | tar -xzf - --strip-components=1 -C /mnt/openwrt
           cd /mnt/openwrt
           ls -la
 
